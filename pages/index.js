@@ -1,14 +1,19 @@
-import styled from 'styled-components'
+import React from 'react';
+import styled from 'styled-components';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+
 import db from '../db.json';
 import Widget from '../src/components/Widget';
+import QuizLogo from '../src/components/QuizLogo';
 import QuizBackground from '../src/components/QuizBackground';
 import Footer from '../src/components/Footer';
 import GitHubCorner from '../src/components/GitHubCorner';
 
-const Title = styled.h1`
+/* const Title = styled.h1`
   font-size: 50px;
   color: ${({ theme }) => theme.colors.secondary};
-`
+` */
 // javascript puro
 /* const BackgroundImage = styled.div`
   background-image: url(${db.bg});
@@ -29,28 +34,56 @@ export const QuizContainer = styled.div`
 `;
 
 export default function Home() {
+  const router = useRouter();
+  const [name, setName] = React.useState('');
   return (
     <QuizBackground backgroundImage={db.bg}>
+      <Head>
+        <title>AluraQuiz - Modelo Base</title>
+      </Head>
       <QuizContainer>
+        <QuizLogo />
         <Widget>
-        <Widget.Header>
-          <h1>The legend of zelda</h1>
-        </Widget.Header>
-        <Widget.Content>
-          <p>Lorem, ipsum dolor sit amet consectetur</p>
-        </Widget.Content>
-          
-        </Widget>
-        <Widget>
+          <Widget.Header>
+            <h1>{db.title}</h1>
+          </Widget.Header>
           <Widget.Content>
-            <h1>The legend of zelda</h1>
+            <form onSubmit={function (infosDoEvento) {
+              infosDoEvento.preventDefault();
+              router.push(`/quiz?name=${name}`);
+              console.log('Fazendo uma submissão por meio do react');
 
-            <p>Lorem, ipsum dolor sit amet consectetur</p>
+              // router -> rotas manda para a próxima página
+            }}
+            >
+              <input
+                onChange={function (infosDoEvento) {
+                  console.log(infosDoEvento.target.value);
+                  // State
+                  // name = infosDoEvento.target.value;
+                  setName(infosDoEvento.target.value);
+                }}
+                placeholder="Diz ai seu nome para jogar :D"
+              />
+              <button type="submit" disabled={name.length === 0}>
+                Jogar
+                { name }
+                ?
+              </button>
+            </form>
           </Widget.Content>
         </Widget>
-        <Footer/>
+
+        <Widget>
+          <Widget.Content>
+            <h1>Quizes da Galera</h1>
+
+            <p>lorem ipsum dolor sit amet...</p>
+          </Widget.Content>
+        </Widget>
+        <Footer />
       </QuizContainer>
-      <GitHubCorner projectUrl=""/>
+      <GitHubCorner projectUrl="https://github.com/JonhisonF" />
     </QuizBackground>
-  )
+  );
 }
