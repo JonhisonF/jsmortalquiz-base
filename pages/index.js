@@ -9,6 +9,8 @@ import QuizLogo from '../src/components/QuizLogo';
 import QuizBackground from '../src/components/QuizBackground';
 import Footer from '../src/components/Footer';
 import GitHubCorner from '../src/components/GitHubCorner';
+import Input from '../src/components/Input';
+import Button from '../src/components/Button';
 
 /* const Title = styled.h1`
   font-size: 50px;
@@ -22,7 +24,7 @@ import GitHubCorner from '../src/components/GitHubCorner';
   background-position: center;
 `; */
 
-export const QuizContainer = styled.div`
+const QuizContainer = styled.div`
   width: 100%;
   max-width: 350px;
   padding-top: 45px;
@@ -48,28 +50,28 @@ export default function Home() {
             <h1>{db.title}</h1>
           </Widget.Header>
           <Widget.Content>
-            <form onSubmit={function (infosDoEvento) {
+            <form onSubmit={(infosDoEvento) => {
               infosDoEvento.preventDefault();
               router.push(`/quiz?name=${name}`);
+              // eslint-disable-next-line no-console
               console.log('Fazendo uma submissão por meio do react');
 
               // router -> rotas manda para a próxima página
             }}
             >
-              <input
-                onChange={function (infosDoEvento) {
-                  console.log(infosDoEvento.target.value);
+              <Input
+                name="nomeDoUsuario"
+                onChange={(infosDoEvento) => {
                   // State
                   // name = infosDoEvento.target.value;
                   setName(infosDoEvento.target.value);
                 }}
+                value={name}
                 placeholder="Diz ai seu nome para jogar :D"
               />
-              <button type="submit" disabled={name.length === 0}>
-                Jogar
-                { name }
-                ?
-              </button>
+              <Button type="submit" disabled={name.length === 0}>
+                {`Deseja jogar ${name} ?`}
+              </Button>
             </form>
           </Widget.Content>
         </Widget>
